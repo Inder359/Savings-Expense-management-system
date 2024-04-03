@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="jquery.datepick.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Ensure header is on top */
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Default background color for the page */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between; /* Adjusted alignment */
+            align-items: center; /* Center vertically */
+            background-color: #4CAF50; /* Green color for the header */
+            color: #fff;
+            padding: 20px;
+            box-sizing: border-box; /* Ensure padding is included in width */
+            position: relative; /* Added relative positioning */
+        }
+
+        header h1 {
+            margin: 0; /* Remove default margin */
+        }
+
+        .buttons-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 20px;
+        }
+
+        header a {
+            margin-left: 20px; /* Add space between header title and link */
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 20px 40px; /* Adjusted padding to make buttons bigger */
+            margin: 10px;
+            font-size: 24px; /* Adjusted font size */
+            text-align: center;
+            cursor: pointer;
+            background-color: #4CAF50; /* Green color */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+            background-color: #fff; /* White background color for the container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #dateRangePickerContainer {
+            position: relative;
+            width: 60%; /* Set width of the container */
+            margin: 0 auto; /* Center the container */
+        }
+
+        #dateRangePicker {
+            width: 100%; /* Full width for the input */
+            padding: 10px 40px; /* Adjusted padding for the input */
+            font-size: 18px; /* Adjusted font size */
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+
+        .calendar-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .home-link {
+            margin-top: 20px; /* Added margin to move the link below the buttons */
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Wallet Ease</h1>
+        <div class="buttons-container">
+            <a href="main.html" class="btn">Home</a>
+            <a href="download.html" class="btn">Download</a>
+            <a href="aboutus.html" class="btn">About Us</a>
+            <a href="setting.html" class="btn">Setting</a>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1>Download Options</h1>
+        
+        <form method="post" action="download_test.php">
+            <input type="date" name="download_date" placeholder="Select your Date">
+            <input type="submit" name="search_record" value="Search Record">
+        </form>
+        
+        <form method="post" action="download_test.php">
+            <input type="hidden" name="selected_date" id="selectedDateInput">
+            <button type="submit" name="download_expenses" class="btn">Download Expenses CSV</button>
+            <button type="submit" name="download_savings" class="btn">Download Savings CSV</button>
+        </form>
+    </div>
+</body>
+</html>

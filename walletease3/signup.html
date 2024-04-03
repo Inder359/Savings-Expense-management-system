@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up for Wallet Ease</title>
+    <!-- Include your CSS styles -->
+  <style>
+    body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(155deg, #f7ebf4, #78f96a);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #35a944;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle input[type="password"] {
+            padding-right: 35px;
+        }
+
+        .password-toggle .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #1e88e5; /* Blue color */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005cb2; /* Darker blue on hover */
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        a {
+            color: #35a944;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign up for Wallet Ease</h1>
+
+        <div id="signupSection">
+            <form id="signupForm" action="signup.php" method="post" onsubmit="return validateSignup()">
+            
+                <input type="text"   name="username" placeholder="Username"><br><br>
+                <input type="email"   name="signupEmail" placeholder="email"><br><br>
+                <div class="password-toggle">
+                    <input type="password"   name="signupPassword"  placeholder="password" required>
+                    <img class="toggle-password" src="https://img.icons8.com/material-outlined/24/000000/visible--v1.png" onclick="togglePasswordVisibility('signupPassword')" alt="Toggle password visibility">
+                </div><br><br>
+
+                <input  type="submit" value="submit">   
+            </form>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </div>
+
+    <!-- Include your JavaScript code -->
+    <script>function togglePasswordVisibility(inputId) {
+        var passwordInput = document.getElementById(inputId);
+        var togglePassword = passwordInput.nextElementSibling.querySelector("img");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePassword.src = "https://img.icons8.com/material-outlined/24/000000/invisible--v1.png";
+        } else {
+            passwordInput.type = "password";
+            togglePassword.src = "https://img.icons8.com/material-outlined/24/000000/visible--v1.png";
+        }
+    }
+
+    function showSignup() {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("signupSection").style.display = "block";
+    }
+
+    function showLogin() {
+        document.getElementById("signupSection").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
+    }
+
+    function forgotPassword() {
+        alert("Please contact support to reset your password.");
+    }
+
+    function requestLocation() {
+        document.getElementById("setupPopup").style.display = "none";
+        document.getElementById("locationPopup").style.display = "block";
+    }
+
+    function showCachePopup() {
+        document.getElementById("locationPopup").style.display = "none";
+        document.getElementById("cachePopup").style.display = "block";
+    }
+
+    function closeCachePopup() {
+        document.getElementById("cachePopup").style.display = "none";
+        window.location.href = "main.html"; // Redirect to main page after setup
+    }
+
+    function validateSignup() {
+var email = document.getElementById("signupEmail").value;
+var password = document.getElementById("signupPassword").value;
+
+// Example validation - checking if email is empty
+if (email === "") {
+    alert("Please enter a valid email address.");
+    return false;
+}
+
+// Check if the email is already registered
+if (localStorage.getItem(email)) {
+    alert("This email is already registered.");
+    return false;
+}
+
+// Save the user's email and password in localStorage
+localStorage.setItem(email, true); // Marking email as registered
+localStorage.setItem(email + "_password", password);
+
+// Assuming validation is successful, redirect the user
+showSuccessPopup("Signup successful. Redirecting...");
+setTimeout(function() {
+    window.location.href = "main.html";
+}, 2000);
+return false; // Prevent form submission for demonstration
+}
+
+
+function validateLogin() {
+var email = document.getElementById("loginEmail").value;
+var password = document.getElementById("loginPassword").value;
+
+// Example validation - checking if email and password are empty
+if (email === "" || password === "") {
+    alert("Please enter both email and password.");
+    return false;
+}
+
+// Check if the email is registered
+if (!localStorage.getItem(email)) {
+    alert("This email is not registered.");
+    return false;
+}
+
+// Retrieve the stored password
+var storedPassword = localStorage.getItem(email + "_password");
+
+// Check if the entered password matches the stored password
+if (password !== storedPassword) {
+    alert("Incorrect password.");
+    return false;
+}
+
+// Assuming validation is successful, redirect the user
+showSuccessPopup("Login successful. Redirecting...");
+setTimeout(function() {
+    window.location.href = "main.html";
+}, 2000);
+return false; // Prevent form submission for demonstration
+}
+
+function showSuccessPopup(message) {
+var popup = document.createElement("div");
+popup.classList.add("popup");
+popup.textContent = message;
+document.body.appendChild(popup);
+setTimeout(function() {
+    popup.style.display = "none";
+}, 2000);
+}
+</script>
+</body>
+</html>

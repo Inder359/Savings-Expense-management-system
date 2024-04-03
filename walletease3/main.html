@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>WalletEASE - Expense Recorder</title>
+    <style>
+        /* styles.css */
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(to bottom, #e4f1d6, #98de98);
+
+
+color: #333;
+    transition: background-color 0.3s;
+}
+/* Apply transitions to buttons */
+.btn {
+    /* Existing button styles */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+    color: #fff; /* Change color on hover */
+}
+
+header {
+    background: linear-gradient(to right, #adf1a8, #35a944);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+header .buttons-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+    margin-bottom: 20px;
+}
+
+form input[type="number"],
+form select,
+form input[type="date"],
+form input[type="time"],
+form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f9f9f9; /* Light gray background */
+}
+
+form button[type="submit"]:hover {
+    background-color: #005f6b;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light gray background for even rows */
+}
+
+.total-amount {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.success-popup, .exceeded-budget-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(76, 175, 80, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 999;
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+.exceeded-budget {
+    background-color: #ffcccc !important;
+}
+
+.about-section {
+    margin-top: 20px;
+}
+
+.contact-info {
+    margin-top: 20px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+}
+
+.contact-info a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    form input[type="number"],
+    form select,
+    form input[type="date"],
+    form input[type="time"],
+    form textarea,
+    form button[type="submit"] {
+        width: 100%;
+    }
+}
+
+/* Additional CSS */
+.return-result-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.return-result-container h3 {
+    margin-top: 0;
+}
+
+.return-result-container p {
+    margin-bottom: 10px;
+}
+
+#monthlyOverview {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.monthly-box {
+    flex: 0 1 calc(50% - 10px);
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    animation: slideIn 1s ease-out;
+}
+
+.monthly-box h3 {
+    margin-top: 0;
+}
+
+.monthly-box p {
+    margin: 5px 0;
+}
+
+/* Animations */
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.footer-text {
+    margin-bottom: 0;
+}
+
+.responsive-image {
+    width: 100%;
+    height: auto;
+}
+
+.hero-image img:hover {
+    transform: scale(1.1); /* Scale up by 10% on hover */
+}
+
+.container {
+    background-color: #f9f9f9; /* Change to a light color */
+}
+.exceeded-budget {
+            background-color: #ffcccc !important;
+        }
+        .success-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 999;
+            transition: opacity 0.5s;
+
+        }
+.btn-edit:hover,
+.btn-delete:hover {
+    background-color: #0056b3;
+}
+
+.graph-wrapper {
+    width: 100%;
+    max-width: 800px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the wrapper horizontally */
+}
+
+.graph-container {
+    width: 100%; /* Adjust to match the width of your other table */
+    height: 300px;
+    border: 1px solid #ddd; /* Lighter border color */
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background-color: #f9f9f9; /* Light gray background */
+}
+
+.graph-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+    pointer-events: none;
+}
+
+.graph-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+/* Add hover effect */
+.graph-container:hover::after {
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
+}
+
+/* Make the content inside the graph bigger and brighter */
+.graph-container .chartjs-render-monitor {
+    color: #333; /* Dark gray text color */
+}
+
+.graph-container .chartjs-render-monitor .chartjs-tooltip {
+    font-size: 14px; /* Slightly smaller font size */
+    background-color: #333; /* Dark background */
+    border: 1px solid #fff; /* White border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px; /* Adequate padding */
+}
+
+.graph-container .chartjs-render-monitor .chartjs-tooltip-key {
+    font-weight: bold; /* Bold tooltip key text */
+}
+
+.graph-container .chartjs-render-monitor .chartjs-tooltip-value {
+    margin-left: 4px; /* Add some margin between key and value */
+}
+
+/* Additional styling for better readability */
+.graph-container .chartjs-render-monitor .chartjs-tooltip-value {
+    color: #fff; /* White color for tooltip value */
+}
+
+.graph-container .chartjs-render-monitor .chartjs-tooltip-key {
+    color: #fff; /* White color for tooltip key */
+}
+
+
+.btn-download {
+    background-color: #008CBA; /* Change background color */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-download:hover {
+    background-color: #005f6b; /* Darken the background color on hover */
+}
+/* Navbar Styles */
+.navbar {
+    background-color: #2c3e50; /* Blue background */
+    color: #ecf0f1; /* Light text color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+}
+
+.navbar .logo h1 {
+    margin: 0;
+}
+
+.navbar nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+}
+
+.navbar nav ul li {
+    margin: 0 15px;
+}
+
+.navbar nav ul li a {
+    color: #18bc9c; /* Green text color */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.navbar nav ul li a:hover {
+    background-color: #18bc9c; /* Green background on hover */
+    color: #fff; /* White text on hover */
+}
+
+/* Photos Section Styles */
+.photos-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+}
+
+.photos-section img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+
+</style>
+</head>
+<body>
+    
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <h1>Wallet Ease</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="main.html">Home</a></li>
+                    <li><a href="download_test.php">Download</a></li>
+                    <li><a href="aboutus.html">About Us</a></li> 
+                    <li><a href="setting.html">Setting</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="photos-section" style="text-align: left;">
+        <img id="frontPageImage" src="karan.jpg" style="width: 40%; height: auto;">
+        <img id="frontPageImage1" src="karan2.jpg" style="width: 40%; height: auto;">
+    </div>
+    
+    
+    <div class="container">
+        <h2>Enter Your Monthly Income</h2>
+        <form action="user_income.php" method="POST"    >
+           <label for="monthlyIncome">Enter Monthly Income (INR):</label>
+            <input type="number" id="monthlyIncome" name="monthlyIncome" required>
+            <button type="submit" class="btn">Set Income</button>
+           
+        </form>
+    </div>
+      <div class="container" style="background-color: #f9f9f9;">
+        <h2>Budget for the Month</h2>
+        <form action="user_income.php" method="POST">
+            <label for="monthlyBudget">Enter Monthly Budget (INR):</label>
+            <input type="number" id="monthlyBudget" name="monthlyBudget" required>
+            <label for="budgetMonth">Select Budget Month:</label>
+            <input type="month" id="budgetMonth" name="budgetMonth" required>
+            <button type="submit" class="btn">Set Budget</button>
+        </form>
+        <p class="total-amount" id="totalAmount">Budget for the Month: ₹0</p>
+    </div>
+
+    <div class="container" style="background-color: #f9f9f9;">
+        <h2>Record Expense</h2>
+        <form  id="expenseForm" action="expenses.php" method="post">
+            <label for="amount">Amount (INR):</label>
+            <input type="number" id="amount" name="amount" required>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="">Select a category</option>
+                <option value="collegeFees">College Fees</option>
+                <option value="groceries">Groceries</option>
+                <option value="utilities">Utilities</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="notes">Notes:</label>
+            <textarea id="notes" name="notes" rows="4" cols="50"></textarea>
+
+            <input type="submit" class="btn" style="background-color: #008CBA;" >Add Expense
+        </form>
+    </div>
+    <div class="container" style="background-color: #f9f9f9;">
+        <h2>Recorded Expenses</h2>
+        <div class="table-container">
+            <table id="recordedExpenses">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                
+                
+                <tbody></tbody>
+            </table>
+<br>
+<br>
+    
+                
+    </select>
+        </div>
+    </div>
+
+    <div class="container" style="background-color: #f9f9f9;">
+        <h2>Savings</h2>
+        <form action="saving.php" method="POST" >
+            <label for="savingsAmount">Amount (INR):</label>
+            <input type="number" id="savingsAmount" name="savingsAmount" required>
+
+            <label for="savingsType">Type of Savings:</label>
+            <select id="savingsType" name="savingsType" required>
+                <option value="">Select type of savings</option>
+                <option value="FD">Fixed Deposit</option>
+                <option value="mutualFund">Mutual Fund</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="savingsTime">Time (in years):</label>
+            <input type="number" id="savingsTime" name="savingsTime" required>
+
+            <label for="interestRate">Interest Rate (%):</label>
+            <input type="number" id="interestRate" name="interestRate" required>
+
+            <button type="submit" class="btn" style="background-color: #008CBA;">Add Savings</button>
+        </form>
+    </div>
+
+    
+    <div class="container" style="background-color: #f9f9f9;">
+        <h2>Savings Overview</h2>
+        <div class="table-container">
+            <table id="savingsTable">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Type of Savings</th>
+                        <th>Time (years)</th>
+                        <th>Interest Rate</th>
+                        <th>Interest Earned</th>
+                        <th>Amount After Maturity</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <br><br>
+            
+    
+ </div>
+    </div>
+    
+<div class="container" style="background-color: #f9f9f9;">
+    <h2>Monthly Overview</h2>
+    <div class="graph-wrapper">
+        <div class="graph-container">
+            <canvas id="expenseChart" width="100%" height="300"></canvas>
+        </div>
+    </div>
+    <div id="monthlyOverview" class="monthly-overview-container">
+        <button class="btn" id="btnIncome">View Income</button>
+        <button class="btn" id="btnBudget">View Budget</button>
+        <button class="btn" id="btnExpenses">View Expenses</button>
+        <button class="btn" id="btnSavings">View Savings</button>
+        <button class="btn" id="btnMoneyLeft">View Money Left</button>
+    </div>
+    <div id="overviewDetails" class="overview-details-container"></div>
+</div>
+<div id="expenseChartContainer">
+    <canvas id="expenseChart" width="400" height="400"></canvas>
+</div>
+
+<!-- Container for Savings Chart -->
+<div id="savingsChartContainer" style="display: none;">
+    <canvas id="savingsChart" width="400" height="400"></canvas>
+</div>
+
+<footer>
+    <div class="about-section">
+        <h2>About Us</h2>
+        <p>Wallet Ease is a simple and efficient expense recorder designed to help you manage your finances effectively. Our platform allows you to easily track your expenses, set budgets, and plan your savings, all in one place.</p>
+        <p>With Wallet Ease, you can take control of your financial future and achieve your goals with confidence.</p>
+    </div>
+
+    <div class="contact-info">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:contact@walletease.com">contact@walletease.com</a></p>
+        <p>Phone: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+        <p>Address: 123 Main Street, City, Country</p>
+    </div>
+    <p class="footer-text">&copy; 2024 Wallet Ease. All rights reserved.</p>
+</footer>
+
+
+
+    <div class="success-popup" id="successPopup">Record added successfully!</div>
+    <div class="exceeded-budget-popup" id="exceededBudgetPopup">You have exceeded your monthly budget!</div>
+
+    <script>
+ const images = ["karan.jpg", "inder.jpg", "dev.jpg"];
+    let currentIndex = 0;
+
+    function changeImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        document.getElementById("frontPageImage").src = images[currentIndex];
+    }
+
+    setInterval(changeImage, 3000);
+
+    const images1 = ["karan2.jpg", "inder2.jpg", "dev2.jpg"];
+    let currentIndex1 = 0;
+
+    function changeImage1() {
+        currentIndex1 = (currentIndex1 + 1) % images1.length;
+        document.getElementById("frontPageImage1").src = images1[currentIndex1];
+    }
+
+    setInterval(changeImage1, 3000);
+const ctx = document.getElementById('expenseChart').getContext('2d');
+const expenseChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Expenses',
+            data: [],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.8)', // Red
+                'rgba(255, 159, 64, 0.8)', // Orange
+                'rgba(255, 206, 86, 0.8)', // Yellow
+                'rgba(75, 192, 192, 0.8)', // Teal
+                'rgba(153, 102, 255, 0.8)', // Purple
+            ],
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2
+        }, {
+            label: 'Savings',
+            data: [],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.8)', // Blue
+                'rgba(255, 0, 255, 0.8)', // Magenta
+                'rgba(0, 255, 255, 0.8)', // Cyan
+                'rgba(255, 140, 0, 0.8)', // Dark Orange
+                'rgba(0, 255, 0, 0.8)', // Lime Green
+            ],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                stacked: true,
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)' // Lighter grid color
+                },
+                ticks: {
+                    font: {
+                        size: 14 // Increase font size of y-axis ticks
+                    },
+                    color: '#fff' // White color for y-axis labels
+                }
+            },
+            x: {
+                stacked: true,
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)' // Lighter grid color
+                },
+                ticks: {
+                    font: {
+                        size: 14 // Increase font size of x-axis ticks
+                    },
+                    color: '#fff' // White color for x-axis labels
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#fff' // White color for legend labels
+                }
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            datalabels: {
+                anchor: 'end',
+                align: 'top',
+                formatter: function(value, context) {
+                    return value > 0 ? value : '';
+                },
+                font: {
+                    size: 14,
+                    weight: 'bold'
+                },
+                color: '#fff'
+            }
+        }
+    }
+});
+
+document.getElementById("budgetForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const monthlyBudget = parseFloat(document.getElementById("monthlyBudget").value);
+document.querySelector(".total-amount").textContent = `Budget for the Month: ₹${monthlyBudget.toFixed(2)}`;
+const totalExpenses = calculateTotalExpenses();
+const totalSavings = calculateTotalSavings();
+const container = document.querySelector(".budget-summary-container");
+    if (totalExpenses + totalSavings > monthlyBudget) {
+        container.classList.add("exceeded-budget");
+        document.getElementById("exceededBudgetPopup").style.display = "block";
+    } else {
+        container.classList.remove("exceeded-budget");
+        document.getElementById("exceededBudgetPopup").style.display = "none";
+    }
+
+    document.getElementById("successPopup").style.display = "block";
+    setTimeout(function() {
+        document.getElementById("successPopup").style.display = "none";
+    }, 5000); // Popup disappears after 5 seconds
+});
+
+document.getElementById("expenseForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const amount = parseFloat(document.getElementById("amount").value);
+    const category = document.getElementById("category").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const notes = document.getElementById("notes").value;
+
+    // Add the expense to the table
+    const recordedExpenses = document.getElementById("recordedExpenses").getElementsByTagName('tbody')[0];
+    const expenseRow = document.createElement("tr");
+    expenseRow.innerHTML = `
+        <td>${category}</td>
+        <td>₹${amount.toFixed(2)}</td>
+        <td>${date}</td>
+        <td>${time}</td>
+        <td>${notes}</td>
+    `;
+    recordedExpenses.appendChild(expenseRow);
+
+    // Update the chart for expenses
+    expenseChart.data.labels.push(category);
+    expenseChart.data.datasets[0].data.push(amount);
+    expenseChart.update();
+
+    // Show success popup
+    const successPopup = document.getElementById("successPopup");
+    successPopup.textContent = "Expense added successfully!";
+    successPopup.style.display = "block";
+    setTimeout(() => {
+        successPopup.style.display = "none";
+    }, 2000);
+
+    // Clear the form fields
+    document.getElementById("amount").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("time").value = "";
+    document.getElementById("notes").value = "";
+
+    // Check if expenses exceed budget
+    const monthlyBudget = parseFloat(document.getElementById("monthlyBudget").value);
+document.querySelector(".total-amount").textContent = `Budget for the Month: ₹${monthlyBudget.toFixed(2)}`;
+const totalExpenses = calculateTotalExpenses();
+const totalSavings = calculateTotalSavings();
+
+if (totalExpenses + totalSavings > monthlyBudget) {
+    document.querySelector(".container:nth-child(2)").classList.add("exceeded-budget");
+    document.getElementById("exceededBudgetPopup").style.display = "block";
+    exceededBudgetPopup.innerHTML += "<br><button class='btn' id='increaseBudgetBtn'>Increase Budget</button>";
+    document.getElementById("increaseBudgetBtn").addEventListener("click", function () {
+        document.getElementById("monthlyBudget").value = (totalExpenses + totalSavings).toFixed(2);
+        document.getElementById("budgetForm").dispatchEvent(new Event("submit"));
+    });
+}
+else {
+    // Remove the "exceeded-budget" class from the second element with class "container"
+    document.querySelector(".container:nth-child(2)").classList.remove("exceeded-budget");
+    
+    // Hide the element with id "exceededBudgetPopup"
+    document.getElementById("exceededBudgetPopup").style.display = "none";
+}
+
+});
+
+function calculateTotalExpenses() {
+    const expenses = document.querySelectorAll("#recordedExpenses tbody tr td:nth-child(2)");
+    let totalExpenses = 0;
+    for (const expense of expenses) {
+        totalExpenses += parseFloat(expense.textContent.slice(1)); // Remove ₹ symbol and convert to number
+    }
+    return totalExpenses;
+}
+
+
+function calculateTotalSavings() {
+    const savings = document.querySelectorAll("#savingsTable tbody tr td:nth-child(1)");
+    let totalSavings = 0;
+    for (const saving of savings) {
+        totalSavings += parseFloat(saving.textContent.slice(1)); // Remove ₹ symbol and convert to number
+    }
+    return totalSavings;
+}
+
+document.getElementById("savingsForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const savingsAmount = parseFloat(document.getElementById("savingsAmount").value);
+    const savingsType = document.getElementById("savingsType").value;
+    const savingsTime = parseFloat(document.getElementById("savingsTime").value);
+    const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+
+    const interestEarned = savingsAmount * interestRate * savingsTime;
+    const amountAfterMaturity = savingsAmount + interestEarned;
+
+    const savingsTable = document.getElementById("savingsTable").getElementsByTagName('tbody')[0];
+    const savingsRow = document.createElement("tr");
+    savingsRow.innerHTML = `
+        <td>₹${savingsAmount.toFixed(2)}</td>
+        <td>${savingsType}</td>
+        <td>${savingsTime}</td>
+        <td>${(interestRate * 100).toFixed(2)}%</td>
+        <td>₹${interestEarned.toFixed(2)}</td>
+        <td>₹${amountAfterMaturity.toFixed(2)}</td>
+        <td>${new Date().toISOString().split('T')[0]}</td>
+        <td>${new Date().toISOString().split('T')[1].slice(0, 8)}</td>
+    `;
+    savingsTable.appendChild(savingsRow);
+
+    // Update the chart for savings
+    expenseChart.data.datasets[1].data.push(savingsAmount);
+    expenseChart.update();
+
+    document.getElementById("savingsAmount").value = "";
+    document.getElementById("savingsType").value = "";
+    document.getElementById("savingsTime").value = "";
+    document.getElementById("interestRate").value = "";
+
+    const successPopup = document.getElementById("successPopup");
+    successPopup.textContent = "Savings added successfully!";
+    successPopup.style.display = "block";
+    setTimeout(() => {
+        successPopup.style.display = "none";
+    }, 2000);
+});
+
+// Monthly overview buttons functionality
+document.getElementById("btnBudget").addEventListener("click", function() {
+    const budget = parseFloat(document.getElementById("monthlyBudget").value);
+    const details = 'Budget for the Month: ₹${budget.toFixed(2)}';
+    displayDetails(details);
+});
+document.getElementById("btnExpenses").addEventListener("click", function() {
+    const expenses = document.querySelectorAll("#recordedExpenses tbody tr");
+    let totalExpenses = 0;
+    expenses.forEach(expense => {
+        const amount = parseFloat(expense.querySelector("td:nth-child(2)").textContent.replace("₹", ""));
+        totalExpenses += amount;
+    });
+    const details = 'Total Expenses for the Month: ₹${totalExpenses.toFixed(2)}';
+    displayDetails(details);
+});
+
+document.getElementById("btnSavings").addEventListener("click", function() {
+    const savings = document.querySelectorAll("#savingsTable tbody tr");
+    let totalSavings = 0;
+    savings.forEach(saving => {
+        const amount = parseFloat(saving.querySelector("td:nth-child(1)").textContent.replace("₹", ""));
+        totalSavings += amount;
+    });
+    const details = 'Total Savings for the Month: ₹${totalSavings.toFixed(2)}';
+    displayDetails(details);
+});
+
+document.getElementById("btnMoneyLeft").addEventListener("click", function() {
+    const budget = parseFloat(document.getElementById("monthlyBudget").value);
+    const expenses = document.querySelectorAll("#recordedExpenses tbody tr");
+    let totalExpenses = 0;
+    expenses.forEach(expense => {
+        const amount = parseFloat(expense.querySelector("td:nth-child(2)").textContent.replace("₹", ""));
+        totalExpenses += amount;
+    });
+    const savings = document.querySelectorAll("#savingsTable tbody tr");
+    let totalSavings = 0;
+    savings.forEach(saving => {
+        const amount = parseFloat(saving.querySelector("td:nth-child(1)").textContent.replace("₹", ""));
+        totalSavings += amount;
+    });
+    const moneyLeft = budget - totalExpenses - totalSavings;
+    const details = 'Money Left for the Month: ₹${moneyLeft.toFixed(2)}';
+    displayDetails(details);
+});
+
+// Function to display details
+function displayDetails(details) {
+    document.getElementById("overviewDetails").innerHTML = details;
+}
+
+// Testing phase of budget exceeds the income
+document.getElementById("budgetForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const monthlyBudget = parseFloat(document.getElementById("monthlyBudget").value);
+    const monthlyIncome = parseFloat(document.getElementById("monthlyIncome").value);
+    const budgetContainer = document.getElementById("budgetContainer");
+
+    if (monthlyBudget > monthlyIncome) {
+        budgetContainer.classList.add("exceeded-budget");
+    } else {
+        budgetContainer.classList.remove("exceeded-budget");
+    }
+
+    // Show success popup
+    document.getElementById("successPopup").style.display = "block";
+    setTimeout(function() {
+        document.getElementById("successPopup").style.display = "none";
+    }, 2000); // Popup disappears after 2 seconds
+});
+
+document.getElementById("incomeForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Here you can handle the submission of the income form
+    // For simplicity, we're just displaying the success popup
+    document.getElementById("successPopup").style.display = "block";
+    setTimeout(function() {
+        document.getElementById("successPopup").style.display = "none";
+    }, 2000); // Popup disappears after 2 seconds
+});
+
+// Function to generate CSV data for expenses
+function generateExpensesCSV() {
+    const table = document.getElementById("recordedExpenses");
+    const rows = table.querySelectorAll("tbody tr");
+
+    let csvContent = "Category,Amount,Date,Time,Notes\n";
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const rowData = Array.from(cells).map(cell => cell.textContent.trim().replace(",", ""));
+        csvContent += rowData.join(",") + "\n";
+    });
+
+    return csvContent;
+}
+
+// Function to generate CSV data for savings
+function generateSavingsCSV() {
+    const table = document.getElementById("savingsTable");
+    const rows = table.querySelectorAll("tbody tr");
+
+    let csvContent = "Amount,Type of Savings,Time (years),Interest Rate,Interest Earned,Amount After Maturity,Date,Time\n";
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const rowData = Array.from(cells).map(cell => cell.textContent.trim().replace(",", ""));
+        csvContent += rowData.join(",") + "\n";
+    });
+
+    return csvContent;
+}
+
+// Function to trigger the download of the generated CSV data
+function downloadCSV(filename, csvContent) {
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+const expenseData = {
+            labels: ['Food', 'Transportation', 'Entertainment', 'Bills', 'Other'],
+            data: [300, 150, 100, 200, 50],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+        };
+
+        const savingsData = {
+            labels: ['Emergency Fund', 'Vacation Fund', 'Investments', 'Other Savings'],
+            data: [500, 300, 200, 100],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+        };
+
+        // Function to show expense chart
+        function showExpenseChart() {
+            document.getElementById('expenseChartContainer').style.display = 'block';
+            document.getElementById('savingsChartContainer').style.display = 'none';
+            generatePieChart('expenseChart', expenseData);
+        }
+
+        // Function to show savings chart
+        function showSavingsChart() {
+            document.getElementById('expenseChartContainer').style.display = 'none';
+            document.getElementById('savingsChartContainer').style.display = 'block';
+            generatePieChart('savingsChart', savingsData);
+        }
+
+        // Function to generate a pie chart
+        function generatePieChart(chartId, data) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.data,
+                        backgroundColor: data.backgroundColor
+                    }]
+                }
+            });
+        }
+
+        // Show initial expense chart
+        showExpenseChart();
+    </script>
+</body>
+</html>

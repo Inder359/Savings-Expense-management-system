@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Ensure header is on top */
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Default background color for the page */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between; /* Adjusted alignment */
+            align-items: center; /* Center vertically */
+            background-color: #4CAF50; /* Green color for the header */
+            color: #fff;
+            padding: 20px; /* Adjusted padding */
+            padding-top: 30px; /* Added padding to move header down within the green line */
+            box-sizing: border-box; /* Ensure padding is included in width */
+            position: relative; /* Added relative positioning */
+        }
+
+        header h1 {
+            margin: 0; /* Remove default margin */
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+            background-color: #fff; /* White background color for the container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            margin-top: 20px; /* Adjusted margin */
+        }
+
+        button {
+            padding: 20px 40px; /* Adjusted padding to make the button larger */
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 18px; /* Increased font size */
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px; /* Adjusted padding */
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px; /* Increased font size */
+            padding: 5px 10px; /* Adjusted padding */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Settings</h1>
+</header>
+
+<nav>
+    <div></div> <!-- Empty div to create space -->
+    <div>
+        <a href="main.html">Home</a>
+        <a href="download.html">Download</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="setting.html">Setting</a>
+    </div>
+</nav>
+
+<!-- Update Password Button -->
+<div class="container">
+    
+    <form action="setting.php" method="post">
+        <button input type="submit"  name="update_password" value="update password">Update Password</button>
+    </form>
+
+    <!-- Update Name Button -->
+    <form action="update_name.html" method="post">
+        <button type="submit" name="update_name" value="update name">Update Name</button>
+    </form>
+
+    <!-- Update Email Button -->
+    <form action="update_email.html" method="post">
+        <button type="submit" name="update_email" value="update email">Update Email</button>
+    </form>
+
+    <!-- Logout Button -->
+    <form action="setting.php" method="post">
+        <button type="submit"  name="logout" value="Logout">Logout</button>
+    </form>
+</div>
+
+</body>
+</html>

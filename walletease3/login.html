@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Wallet Ease</title>
+    <!-- Include your CSS styles -->
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(155deg, #f7ebf4, #78f96a);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #35a944;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle input[type="password"] {
+            padding-right: 35px;
+        }
+
+        .password-toggle .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #1e88e5; /* Blue color */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005cb2; /* Darker blue on hover */
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        a {
+            color: #35a944;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+         
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login to Wallet Ease</h1>
+
+        <div id="loginSection">
+            <form id="loginForm" action="login.php" method="post" onsubmit="return validateLogin()">
+                <input type="email" id="loginEmail" name="email" placeholder="Email" required><br>
+                <input type="password" id="loginPassword" name="password" placeholder="Password" required><br>
+                <input  type="submit"value="submit ">
+            </form>
+            <p>Forgot your password? <a href="recovery_password.html" onclick="forgotPassword()">Reset it here</a></p>
+            <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        </div>
+    </div>
+ 
+     
+</body>
+</html>
