@@ -6,7 +6,7 @@
     <title>Login to Wallet Ease</title>
     <!-- Include your CSS styles -->
     <style>
-         body {
+        body {
             font-family: Arial, sans-serif;
             background: linear-gradient(155deg, #f7ebf4, #78f96a);
             margin: 0;
@@ -21,8 +21,9 @@
             background-color: #fff;
             padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             text-align: center;
+            max-width: 400px;
         }
 
         h1 {
@@ -32,12 +33,18 @@
 
         input {
             margin: 10px 0;
-            padding: 10px;
-            width: calc(100% - 20px);
+            padding: 12px;
+            width: calc(100% - 24px);
             box-sizing: border-box;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1e88e5;
         }
 
         .password-toggle {
@@ -45,7 +52,7 @@
         }
 
         .password-toggle input[type="password"] {
-            padding-right: 35px;
+            padding-right: 50px;
         }
 
         .password-toggle .toggle-password {
@@ -54,22 +61,31 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
+            color: #999;
         }
 
-        button {
+        .container button[type="submit"] {
             background-color: #1e88e5; /* Blue color */
-            color: #fff;
+            color: #fff; /* Text color */
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 0px;
             font-size: 16px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s; /* Transition for background and text color */
         }
 
-        button:hover {
+        .container button[type="submit"]:hover {
             background-color: #005cb2; /* Darker blue on hover */
+        }
+
+        .container button[type="submit"] img {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
 
         p {
@@ -86,7 +102,18 @@
             text-decoration: underline;
         }
 
-         
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -96,14 +123,60 @@
         <div id="loginSection">
             <form id="loginForm" action="login.php" method="post" onsubmit="return validateLogin()">
                 <input type="email" id="loginEmail" name="email" placeholder="Email" required><br>
-                <input type="password" id="loginPassword" name="password" placeholder="Password" required><br>
-                <input  type="submit"value="submit ">
+                <div class="password-toggle">
+                    <input type="password" id="loginPassword" name="password" placeholder="Password" required>
+                    <img class="toggle-password" src="https://img.icons8.com/material-outlined/24/000000/visible--v1.png" onclick="togglePasswordVisibility('loginPassword')" alt="Toggle password visibility">
+                </div><br><br>
+                <button type="submit">Submit</button>
             </form>
             <p>Forgot your password? <a href="recovery_password.html" onclick="forgotPassword()">Reset it here</a></p>
             <p>Don't have an account? <a href="signup.html">Sign up</a></p>
         </div>
     </div>
- 
-     
+
+    <!-- Include your JavaScript code -->
+    <script>
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var togglePassword = passwordInput.nextElementSibling.querySelector("img");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.src = "https://img.icons8.com/material-outlined/24/000000/invisible--v1.png";
+            } else {
+                passwordInput.type = "password";
+                togglePassword.src = "https://img.icons8.com/material-outlined/24/000000/visible--v1.png";
+            }
+        }
+
+        function validateLogin() {
+            var email = document.getElementById("loginEmail").value;
+            var password = document.getElementById("loginPassword").value;
+
+            // Example validation - checking if email and password are empty
+            if (email === "" || password === "") {
+                alert("Please enter both email and password.");
+                return false;
+            }
+
+            // You can add your PHP logic here to check if the email is registered or not.
+            // If you're encountering issues with this part, please check your PHP code.
+
+            // Assuming validation is successful, show a pop-up message
+            showSuccessPopup("Login successful. Redirecting...");
+            return false; // Prevent form submission for demonstration
+        }
+
+        function showSuccessPopup(message) {
+            var popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.textContent = message;
+            document.body.appendChild(popup);
+            setTimeout(function () {
+                popup.style.display = "none";
+                window.location.href = "main.html"; // Redirect after the pop-up disappears
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
